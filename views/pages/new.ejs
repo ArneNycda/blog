@@ -1,17 +1,13 @@
-<!DOCTYPE html>
-<html>
-<% include ../partials/head %>
-<body>
-    <% include ../partials/header %>
-    <div id="new">
-        <form id="new-post" action="/new" method="post">
-            <label>Title:</label><br>
-            <input id="title" class="text-field" type="text" name="title"><br>
-            <label>Body:</label>
-            <br><textarea id="text" class="text-field" type="text" name="text"></textarea><br>
-            <div style="clear: both";></div>
-            <input id="submit" type="submit">
-        </form>
-    </div>
-</body>
-</html>
+<% extend('../layout') %>
+
+<% include ../partials/header %>
+<div id="new">
+    <form id="new-post" action="/new" method="post">
+        <label>Title:</label><br>
+        <input id="title" class="text-field" type="text" name="title"><br>
+        <label>Body:</label>
+        <br><textarea id="text" class="text-field" type="text" name="text"></textarea><br>
+        <div style="clear: both";></div>
+        <input id="submit" type="submit">
+    </form>
+</div>

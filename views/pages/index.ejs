@@ -1,24 +1,18 @@
-<!DOCTYPE html>
-<html>
-<% include ../partials/head %>
-<body>
-    <% include ../partials/header %>
-    <h1>Posts</h1>
-    <div id="post-list">
-    <%
-        posts.reverse().forEach((post, index) => {
-    %>
+<% extend('../layout') %>
 
-        <div class="post <%= index % 2 === 0 ? 'light' : 'dark' %>">
-            <a href="/post:<%= post.id %>"><%= post.title %></a>
-            <p><%= post.author %></p>
-            <div style="clear: both";></div>
-        </div>
+<% include ../partials/header %>
+<h1>Posts</h1>
+<div id="post-list">
+<%
+    posts.reverse().forEach((post, index) => {
+%>
 
-    <%
-        });
-    %>
-
+    <div class="post <%= index % 2 === 0 ? 'light' : 'dark' %>">
+        <a href="/post:<%= post.id %>"><%= post.title %></a>
     </div>
-</body>
-</html>
+
+<%
+    });
+%>
+
+</div>
