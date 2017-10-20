@@ -78,7 +78,7 @@ textarea {
     margin-right: 30px;
 }
 
-/* posts */
+/* new post */
 .post {
     padding: 20px;
     background-color: gray;
@@ -92,4 +92,14 @@ textarea {
     padding: 20px;
     margin: 20px 0px;
     background-color: lightgray;
+}
+
+/* post */
+#commentForm {
+    margin: auto;
+    width: 95%;
+}
+
+#commentForm textarea {
+    width: 100%;
 }

@@ -7,7 +7,7 @@
 </div>
 
 <%
-    comments.reverse().forEach(comment => {
+    comments.forEach(comment => {
 %>
 
 <div class="comment">
@@ -17,3 +17,8 @@
 <%
     });
 %>
+
+<form id="commentForm" action="/comment?postid=<%= post.id %>" method="post">
+    <textarea id="comment" class="text-field" type="text" name="text"></textarea><br>
+    <input id="submit" type="submit" value="Place comment">
+</form>

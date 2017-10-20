@@ -101,13 +101,18 @@ app.route('/post')
                 });
             });
         }
-    })
-    .post(function (req, res) {
-        // console.log(req.body);
-        // request(`${baseUrl}/api/post/create`, function (error, response, post) {
+    });
 
-        // });
-        // res.redirect('post/3');
+app.route('/comment')    
+    .post(function (req, res) {
+        request.post({
+            url: `${baseUrl}/api/post/${req.query.postid}/comment`,
+            form: req.body
+        }, function (error, response, comment) {
+            if (!error && response.statusCode == 201) {
+                res.redirect(`/post/?post=${JSON.parse(comment).postid}`);
+            }
+        });
     });
 
 module.exports = app;
