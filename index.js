@@ -52,8 +52,18 @@ app.route('/new')
         // }
     })
     .post(function (req, res) {
-        // savePost();
-        res.redirect('posts');
+        // #### make userid dynamic to user after cookies implemented
+        const userid = '1';
+
+        request.post({
+            url: `${baseUrl}/api/user/${userid}/post`,
+            form: req.body
+        }, function (error, response, post) {
+            if (!error && response.statusCode == 201) {
+                res.redirect(`/post/?post=${JSON.parse(post).id}`);
+            }
+        });
+
     });
 
 app.route('/register')
@@ -61,8 +71,14 @@ app.route('/register')
         res.render('./pages/register');
     })
     .post(function (req, res) {
-        // saveUser
-        res.redirect('login');
+        request.post({
+            url: `${baseUrl}/api/user/create`,
+            form: req.body
+        }, function (error, response, post) {
+            if (!error && response.statusCode == 201) {
+                res.redirect('login');
+            }
+        });
     });
 
 app.route('/logout')
@@ -74,18 +90,24 @@ app.route('/logout')
 app.route('/post')
     .get(function (req, res) {
         const postid = req.query.post;
-
-        request(`${baseUrl}/api/post/${postid}`, function (error, response, post) {
-            request(`${baseUrl}/api/comment/forpost/${postid}`, function (error, response, comments) {
-                if (!error && response.statusCode == 200) {
-                    res.render('./pages/posts', {post: JSON.parse(post), comments: JSON.parse(comments)});
-                }
+        if (postid === undefined ) {
+            res.redirect('new');
+        } else {
+            request(`${baseUrl}/api/post/${postid}`, function (error, response, post) {
+                request(`${baseUrl}/api/comment/forpost/${postid}`, function (error, response, comments) {
+                    if (!error && response.statusCode == 200) {
+                        res.render('./pages/posts', {post: JSON.parse(post), comments: JSON.parse(comments)});
+                    }
+                });
             });
-        });
+        }
     })
     .post(function (req, res) {
-        // saveComment();
-        res.redirect('posts');
+        // console.log(req.body);
+        // request(`${baseUrl}/api/post/create`, function (error, response, post) {
+
+        // });
+        // res.redirect('post/3');
     });
 
 module.exports = app;
