@@ -18,6 +18,7 @@ header li {
     margin: 20px 20px 20px 0px;
 }
 
+
 /* postList */
 .post {
     padding: 1rem 0rem;
@@ -34,16 +35,8 @@ header li {
 
 .post a {
     padding-left: 1rem;
-    float: left;
-    display: inline-block;
 }
 
-.post p {
-    padding-right: 1rem;
-    float: right;
-    display: inline-block;
-    text-align: right;
-}
 
 /* form */
 
