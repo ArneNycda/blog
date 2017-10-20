@@ -28,5 +28,22 @@ module.exports = {
         return res.status(200).send(comment);
       })
       .catch(error => res.status(400).send(error));
+  },
+  retrieveForPost(req, res) {
+    return Comment
+      .findAll({
+        where: {
+          postid: req.params.postid
+        }
+      })
+      .then(comments => {
+        if (!comments) {
+          return res.status(404).send({
+            message: 'Comment Not Found',
+          });
+        }
+        return res.status(200).send(comments);
+      })
+      .catch(error => res.status(400).send(error));
   }
 };

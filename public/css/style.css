@@ -48,7 +48,6 @@ h1 {
 
 
 /* form */
-
 label, input, textarea {
     display: inline-block;
 }
@@ -77,4 +76,20 @@ textarea {
 
 #submit {
     margin-right: 30px;
+}
+
+/* posts */
+.post {
+    padding: 20px;
+    background-color: gray;
+}
+
+.post .body {
+    padding-top: 20px;
+}
+
+.comment {
+    padding: 20px;
+    margin: 20px 0px;
+    background-color: lightgray;
 }

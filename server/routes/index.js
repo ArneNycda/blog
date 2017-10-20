@@ -27,5 +27,6 @@ module.exports = (app) => {
 
   app.post('/api/comment/create', commentsController.create);
   app.get('/api/comment/all', commentsController.list);
+  app.get('/api/comment/forpost/:postid', commentsController.retrieveForPost);
   app.get('/api/comment/:commentid', commentsController.retrieve);
 };

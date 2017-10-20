@@ -73,11 +73,15 @@ app.route('/logout')
 
 app.route('/post')
     .get(function (req, res) {
-        // if (loggedin) {
-            res.render('./pages/posts');
-        // } else {
-        //     res.redirect('login');
-        // }
+        const postid = req.query.post;
+
+        request(`${baseUrl}/api/post/${postid}`, function (error, response, post) {
+            request(`${baseUrl}/api/comment/forpost/${postid}`, function (error, response, comments) {
+                if (!error && response.statusCode == 200) {
+                    res.render('./pages/posts', {post: JSON.parse(post), comments: JSON.parse(comments)});
+                }
+            });
+        });
     })
     .post(function (req, res) {
         // saveComment();

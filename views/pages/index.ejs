@@ -9,7 +9,7 @@
 %>
 
     <div user-id="<%= post.userid %>" class="post <%= index % 2 === 0 ? 'light' : 'dark' %>">
-        <a href="/post/<%= post.id %>"><%= post.title %></a>
+        <a href="post?post=<%= post.id %>"><%= post.title %></a>
     </div>
 
 <%
