@@ -2,13 +2,14 @@
 
 <% include ../partials/header %>
 <h1>Posts</h1>
+<div id="post-filter">Show only my own posts: <input type="checkbox" name="post-filter"></div>
 <div id="post-list">
 <%
     posts.reverse().forEach((post, index) => {
 %>
 
-    <div class="post <%= index % 2 === 0 ? 'light' : 'dark' %>">
-        <a href="/post:<%= post.id %>"><%= post.title %></a>
+    <div user-id="<%= post.userid %>" class="post <%= index % 2 === 0 ? 'light' : 'dark' %>">
+        <a href="/post/<%= post.id %>"><%= post.title %></a>
     </div>
 
 <%

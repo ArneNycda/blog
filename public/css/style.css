@@ -20,6 +20,15 @@ header li {
 
 
 /* postList */
+h1 {
+    display: inline-block;
+}
+
+#post-filter {
+    float: right;
+    display: inline-block;
+}
+
 .post {
     padding: 1rem 0rem;
     margin: 1rem 0rem;
