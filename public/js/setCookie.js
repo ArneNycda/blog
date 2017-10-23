@@ -1,0 +1,1 @@
+Cookies.set('blog', 'example');

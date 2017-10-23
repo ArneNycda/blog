@@ -58,16 +58,21 @@ textarea {
 }
 
 /* loginForm */
-#loginForm, #registerForm {
+#login, #register {
     margin: 100px auto;
     width: 50%;
 }
 
-#loginForm h2, #registerForm h2 {
+#login h2, #register h2 {
     margin-bottom: 20px;
 }
 
-#loginForm #submit {
+#login #submit {
+    margin-right: 30px;
+}
+
+/* register */
+#new-user #submit {
     margin-right: 30px;
 }
 
