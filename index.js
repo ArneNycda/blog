@@ -16,6 +16,7 @@ const request = require('request');
 const baseUrl = 'http://localhost:3000';
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const authenticate = require('./lib/authenticate');
 
 app.set('view engine', 'ejs');
 app.engine('ejs', require('express-ejs-extend'));
@@ -32,11 +33,6 @@ app.use(session({
     saveUninitialized: false
 }));
 require('./server/routes')(app);
-
-const checkAuthentication = (req, res, next) => {
-    if(req.session.user) { return next(); }
-    res.redirect('/login');
-};
 
 app.route('/login')
     .get(function (req, res) {
@@ -57,7 +53,7 @@ app.get('/register', function (req, res) {
     res.render('./pages/register');
 });
 
-app.get('/', checkAuthentication, function (req, res) {
+app.get('/', authenticate, function (req, res) {
     request(`${baseUrl}/api/post/all`, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             res.render('./pages/index', {posts: JSON.parse(body)});
@@ -65,7 +61,7 @@ app.get('/', checkAuthentication, function (req, res) {
     });
 });
 
-app.get('/new', checkAuthentication, function (req, res) {
+app.get('/new', authenticate, function (req, res) {
     res.render('./pages/new');
 });
 
@@ -79,7 +75,7 @@ app.get('/logout', function (req, res) {
     });
 });
 
-app.get('/post', checkAuthentication, function (req, res) {
+app.get('/post', authenticate, function (req, res) {
     const user = req.session.user;
 
     const postid = req.query.post;
@@ -97,7 +93,7 @@ app.get('/post', checkAuthentication, function (req, res) {
     }
 });
 
-app.get('*', checkAuthentication, function (req, res) {
+app.get('*', authenticate, function (req, res) {
     res.redirect('/');
 });
 
