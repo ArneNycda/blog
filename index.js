@@ -27,7 +27,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(session({
-    secret: 'oh wow very secret much security',
+    secret: 'secure blog',
     resave: true,
     saveUninitialized: false
 }));
@@ -43,121 +43,79 @@ app.route('/login')
                 req.session.user = user;
                 res.redirect('/');
             } else {
-                res.redirect('login');
+                res.redirect('/login');
             }
         });
     });
 
-app.route('/register')
-    .get(function (req, res) {
-        res.render('./pages/register');
-    })
-    .post(function (req, res) {
-        request.post({
-            url: `${baseUrl}/api/user/create`,
-            form: req.body
-        }, function (error, response, post) {
-            if (!error && response.statusCode == 201) {
-                res.redirect('login');
+app.get('/register', function (req, res) {
+    res.render('./pages/register');
+});
+
+app.get('/', function (req, res) {
+    const user = req.session.user;
+
+    if (user === undefined) {
+        res.redirect('/login');
+    } else {
+        request(`${baseUrl}/api/post/all`, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                res.render('./pages/index', {posts: JSON.parse(body)});
             }
         });
-    });
+    }
+});
 
-app.route('/')
-    .get(function (req, res) {
-        const user = req.session.user;
+app.get('/new', function (req, res) {
+    const user = req.session.user;
 
-        if (user === undefined) {
-            res.redirect('login');
+    if (user === undefined) {
+        res.redirect('/login');
+    } else {
+        res.render('./pages/new');
+    }
+});
+
+app.get('/logout', function (req, res) {
+    req.session.destroy(function(err) {
+        if(err) {
+            throw err;
         } else {
-            request(`${baseUrl}/api/post/all`, function (error, response, body) {
-                if (!error && response.statusCode == 200) {
-                    res.render('./pages/index', {posts: JSON.parse(body)});
-                }
+            res.redirect('/login');
+        }
+    });
+});
+
+app.get('/post', function (req, res) {
+    const user = req.session.user;
+
+    if (user === undefined) {
+        res.redirect('/login');
+    } else {
+        const postid = req.query.post;
+
+        if (postid === undefined ) {
+            res.redirect('new');
+        } else {
+            request(`${baseUrl}/api/post/${postid}`, function (error, response, post) {
+                request(`${baseUrl}/api/comment/forpost/${postid}`, function (error, response, comments) {
+                    if (!error && response.statusCode == 200) {
+                        res.render('./pages/posts', {post: JSON.parse(post), comments: JSON.parse(comments)});
+                    }
+                });
             });
         }
-    });
+    }
+});
 
-app.route('/new')
-    .get(function (req, res) {
-        const user = req.session.user;
+app.get('*', function (req, res) {
+    const user = req.session.user;
 
-        if (user === undefined) {
-            res.redirect('login');
-        } else {
-            res.render('./pages/new');
-        }
-    })
-    .post(function (req, res) {
-        const userid = JSON.parse(req.session.user).id;
-
-        request.post({
-            url: `${baseUrl}/api/user/${userid}/post`,
-            form: req.body
-        }, function (error, response, post) {
-            if (!error && response.statusCode == 201) {
-                res.redirect(`/post/?post=${JSON.parse(post).id}`);
-            }
-        });
-
-    });
-
-app.route('/logout')
-    .get(function (req, res) {
-        req.session.destroy(function(err) {
-            if(err) {
-                throw err;
-            } else {
-                res.redirect('login');
-            }
-        });
-    });
-
-app.route('/post')
-    .get(function (req, res) {
-        const user = req.session.user;
-
-        if (user === undefined) {
-            res.redirect('login');
-        } else {
-            const postid = req.query.post;
-
-            if (postid === undefined ) {
-                res.redirect('new');
-            } else {
-                request(`${baseUrl}/api/post/${postid}`, function (error, response, post) {
-                    request(`${baseUrl}/api/comment/forpost/${postid}`, function (error, response, comments) {
-                        if (!error && response.statusCode == 200) {
-                            res.render('./pages/posts', {post: JSON.parse(post), comments: JSON.parse(comments)});
-                        }
-                    });
-                });
-            }
-        }
-    });
-
-app.route('/comment')
-    .post(function (req, res) {
-
-        request.post({
-            url: `${baseUrl}/api/post/${req.query.postid}/comment`,
-            form: req.body
-        }, function (error, response, comment) {
-            if (!error && response.statusCode == 201) {
-                res.redirect(`/post/?post=${JSON.parse(comment).postid}`);
-            }
-        });
-    });
-
-app.route('*')
-    .get(function (req, res) {
-        const user = req.session.user;
-
-        if (user === undefined) {
-            res.redirect('login');
-        } else {
-            res.redirect('/');
-        }
-    });
+    if (user === undefined) {
+        res.redirect('/login');
+    } else {
+        res.redirect('/');
+    }
+});
 
 module.exports = app;

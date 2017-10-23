@@ -4,16 +4,13 @@
 <div id="post-list">
 <h1>Posts</h1>
 <div id="post-filter">Show only my own posts: <input type="checkbox" name="post-filter"></div>
-<%
-    posts.reverse().forEach((post, index) => {
-%>
+
+<% posts.reverse().forEach((post, index) => { %>
 
     <div user-id="<%= post.userid %>" class="post">
         <a href="post?post=<%= post.id %>"><%= post.title %></a>
     </div>
 
-<%
-    });
-%>
+<% }); %>
 
 </div>

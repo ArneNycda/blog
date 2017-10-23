@@ -7,19 +7,19 @@
         <div class="body"><%= post.body %></div>
     </div>
 
-    <%
-        comments.forEach(comment => {
-    %>
+    <div id="comments">
 
-    <div class="comment">
-        <p><%= comment.text %></p>
+        <% comments.forEach(comment => { %>
+
+        <div class="comment">
+            <p><%= comment.text %></p>
+        </div>
+
+        <% }); %>
+
     </div>
 
-    <%
-        });
-    %>
-
-    <form id="commentForm" action="/comment?postid=<%= post.id %>" method="post">
+    <form id="comment-form">
         <textarea id="comment" class="text-field" type="text" name="text"></textarea><br>
         <input id="submit" type="submit" value="Place comment">
     </form>
