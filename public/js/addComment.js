@@ -8,6 +8,7 @@ $('#comment-form #submit').click(function() {
             text: $("#comment").val()
         },
         success: function(newComment) {
+            $('textarea').val('');
             $('#comments').append(`<div class="comment"><p>${newComment.text}</p></div>`);
         }
     });
