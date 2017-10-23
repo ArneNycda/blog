@@ -10,6 +10,7 @@ module.exports = (app) => {
   app.get('/api/user/all', usersController.list);
   app.post('/api/user/:userid/post', postsController.create); //create post for user
   app.get('/api/user/:userid', usersController.retrieve);
+  app.get('/api/user/find/:username', usersController.findByUsername);
 
   app.get('/api/post', (req, res) => res.status(200).send({
     message: 'Welcome to the posts API!',

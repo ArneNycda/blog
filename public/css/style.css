@@ -20,29 +20,22 @@ header li {
 
 
 /* postList */
-h1 {
+#post-list h1 {
     display: inline-block;
 }
 
-#post-filter {
+#post-list #post-filter {
     float: right;
     display: inline-block;
 }
 
-.post {
+#post-list .post {
     padding: 1rem 0rem;
     margin: 1rem 0rem;
-}
-
-.post.light {
     background-color: lightgray;
 }
 
-.post.dark {
-    background-color: gray;
-}
-
-.post a {
+#post-list .post a {
     padding-left: 1rem;
 }
 
@@ -74,29 +67,29 @@ textarea {
     margin-bottom: 20px;
 }
 
-#submit {
+#loginForm #submit {
     margin-right: 30px;
 }
 
 /* new post */
-.post {
+#post .post {
     padding: 20px;
     background-color: gray;
 }
 
-.post .body {
+#post .post .body {
     padding-top: 20px;
 }
 
-.comment {
+#post .comment {
     padding: 20px;
     margin: 20px 0px;
     background-color: lightgray;
 }
 
-/* post */
+/* comment form */
 #commentForm {
-    margin: auto;
+    margin: 20px auto;
     width: 95%;
 }
 

@@ -1,14 +1,14 @@
 <% extend('../layout') %>
 
 <% include ../partials/header %>
+<div id="post-list">
 <h1>Posts</h1>
 <div id="post-filter">Show only my own posts: <input type="checkbox" name="post-filter"></div>
-<div id="post-list">
 <%
     posts.reverse().forEach((post, index) => {
 %>
 
-    <div user-id="<%= post.userid %>" class="post <%= index % 2 === 0 ? 'light' : 'dark' %>">
+    <div user-id="<%= post.userid %>" class="post">
         <a href="post?post=<%= post.id %>"><%= post.title %></a>
     </div>
 

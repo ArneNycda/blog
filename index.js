@@ -14,6 +14,8 @@ const pool = new Pool({
 const SQL = require('sql-template-strings');
 const request = require('request');
 const baseUrl = 'http://localhost:3000';
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
 
 app.set('view engine', 'ejs');
 app.engine('ejs', require('express-ejs-extend'));
@@ -23,47 +25,27 @@ app.use(express.urlencoded());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cookieParser());
+app.use(session({
+    secret: 'oh wow very secret much security',
+    resave: true,
+    saveUninitialized: false
+}));
 require('./server/routes')(app);
-
-app.route('/')
-    .get(function (req, res) {
-        request(`${baseUrl}/api/post/all`, function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                res.render('./pages/index', {posts: JSON.parse(body)});
-            }
-        });
-    });
 
 app.route('/login')
     .get(function (req, res) {
         res.render('./pages/login');
     })
     .post(function (req, res) {
-        // login();
-        res.redirect('/');
-    });
-
-app.route('/new')
-    .get(function (req, res) {
-        // if (loggedin) {
-            res.render('./pages/new');
-        // } else {
-        //     res.redirect('login');
-        // }
-    })
-    .post(function (req, res) {
-        // #### make userid dynamic to user after cookies implemented
-        const userid = '1';
-
-        request.post({
-            url: `${baseUrl}/api/user/${userid}/post`,
-            form: req.body
-        }, function (error, response, post) {
-            if (!error && response.statusCode == 201) {
-                res.redirect(`/post/?post=${JSON.parse(post).id}`);
+        request(`${baseUrl}/api/user/find/${req.body.username}`, function(error, response, user) {
+            if(user !== null && req.body.password === JSON.parse(user).password) {
+                req.session.user = user;
+                res.redirect('/');
+            } else {
+                res.redirect('login');
             }
         });
-
     });
 
 app.route('/register')
@@ -81,30 +63,82 @@ app.route('/register')
         });
     });
 
-app.route('/logout')
+app.route('/')
     .get(function (req, res) {
-        // logout()
-        res.redirect('login');
-    });
+        const user = req.session.user;
 
-app.route('/post')
-    .get(function (req, res) {
-        const postid = req.query.post;
-        if (postid === undefined ) {
-            res.redirect('new');
+        if (user === undefined) {
+            res.redirect('login');
         } else {
-            request(`${baseUrl}/api/post/${postid}`, function (error, response, post) {
-                request(`${baseUrl}/api/comment/forpost/${postid}`, function (error, response, comments) {
-                    if (!error && response.statusCode == 200) {
-                        res.render('./pages/posts', {post: JSON.parse(post), comments: JSON.parse(comments)});
-                    }
-                });
+            request(`${baseUrl}/api/post/all`, function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    res.render('./pages/index', {posts: JSON.parse(body)});
+                }
             });
         }
     });
 
-app.route('/comment')    
+app.route('/new')
+    .get(function (req, res) {
+        const user = req.session.user;
+
+        if (user === undefined) {
+            res.redirect('login');
+        } else {
+            res.render('./pages/new');
+        }
+    })
     .post(function (req, res) {
+        const userid = JSON.parse(req.session.user).id;
+
+        request.post({
+            url: `${baseUrl}/api/user/${userid}/post`,
+            form: req.body
+        }, function (error, response, post) {
+            if (!error && response.statusCode == 201) {
+                res.redirect(`/post/?post=${JSON.parse(post).id}`);
+            }
+        });
+
+    });
+
+app.route('/logout')
+    .get(function (req, res) {
+        req.session.destroy(function(err) {
+            if(err) {
+                throw err;
+            } else {
+                res.redirect('login');
+            }
+        });
+    });
+
+app.route('/post')
+    .get(function (req, res) {
+        const user = req.session.user;
+
+        if (user === undefined) {
+            res.redirect('login');
+        } else {
+            const postid = req.query.post;
+
+            if (postid === undefined ) {
+                res.redirect('new');
+            } else {
+                request(`${baseUrl}/api/post/${postid}`, function (error, response, post) {
+                    request(`${baseUrl}/api/comment/forpost/${postid}`, function (error, response, comments) {
+                        if (!error && response.statusCode == 200) {
+                            res.render('./pages/posts', {post: JSON.parse(post), comments: JSON.parse(comments)});
+                        }
+                    });
+                });
+            }
+        }
+    });
+
+app.route('/comment')
+    .post(function (req, res) {
+
         request.post({
             url: `${baseUrl}/api/post/${req.query.postid}/comment`,
             form: req.body
@@ -113,6 +147,17 @@ app.route('/comment')
                 res.redirect(`/post/?post=${JSON.parse(comment).postid}`);
             }
         });
+    });
+
+app.route('*')
+    .get(function (req, res) {
+        const user = req.session.user;
+
+        if (user === undefined) {
+            res.redirect('login');
+        } else {
+            res.redirect('/');
+        }
     });
 
 module.exports = app;

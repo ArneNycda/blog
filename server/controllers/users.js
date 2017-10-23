@@ -40,5 +40,15 @@ module.exports = {
         return res.status(200).send(user);
       })
       .catch(error => res.status(400).send(error));
+  },
+  findByUsername(req, res) {
+    return User
+      .findOne({
+        where: {
+          username: req.params.username
+        }
+      })
+      .then(users => res.status(200).send(users))
+      .catch(error => res.status(400).send(error));
   }
 };

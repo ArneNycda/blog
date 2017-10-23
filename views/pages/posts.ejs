@@ -1,24 +1,26 @@
 <% extend('../layout') %>
 
 <% include ../partials/header %>
-<div class="post">
-    <h2 class="title"><%= post.title %></h2>
-    <div class="body"><%= post.body %></div>
+<div id="post">
+    <div class="post">
+        <h2 class="title"><%= post.title %></h2>
+        <div class="body"><%= post.body %></div>
+    </div>
+
+    <%
+        comments.forEach(comment => {
+    %>
+
+    <div class="comment">
+        <p><%= comment.text %></p>
+    </div>
+
+    <%
+        });
+    %>
+
+    <form id="commentForm" action="/comment?postid=<%= post.id %>" method="post">
+        <textarea id="comment" class="text-field" type="text" name="text"></textarea><br>
+        <input id="submit" type="submit" value="Place comment">
+    </form>
 </div>
-
-<%
-    comments.forEach(comment => {
-%>
-
-<div class="comment">
-    <p><%= comment.text %></p>
-</div>
-
-<%
-    });
-%>
-
-<form id="commentForm" action="/comment?postid=<%= post.id %>" method="post">
-    <textarea id="comment" class="text-field" type="text" name="text"></textarea><br>
-    <input id="submit" type="submit" value="Place comment">
-</form>
