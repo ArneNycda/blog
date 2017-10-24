@@ -49,6 +49,11 @@ app.route('/login')
         });
     });
 
+app.get('/retrieveUserid', function(req, res) {
+    const userid = JSON.parse(req.session.user).id;
+    res.send({userid: userid});
+});
+
 app.get('/register', function (req, res) {
     res.render('./pages/register');
 });
@@ -76,8 +81,6 @@ app.get('/logout', function (req, res) {
 });
 
 app.get('/post', authenticate, function (req, res) {
-    const user = req.session.user;
-
     const postid = req.query.post;
 
     if (postid === undefined ) {

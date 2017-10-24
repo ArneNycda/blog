@@ -4,7 +4,7 @@ $('#new-post #submit').click(function() {
     const userid = '1';
 
     $.ajax({
-        type: "POST",
+        type: 'POST',
         url: `/api/user/${userid}/post`,
         data: {
             title: $("#title").val(),

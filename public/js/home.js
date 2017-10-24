@@ -1,3 +1,5 @@
 $('#post-filter input').click(function() {
-    console.log('test');
+    $.get('/retrieveUserid', function(data) {
+        $(`.post:not([user-id="${data.userid}"])`).toggle();
+    });
 });
