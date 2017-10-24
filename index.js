@@ -15,6 +15,7 @@ const SQL = require('sql-template-strings');
 const request = require('request');
 const baseUrl = 'http://localhost:3000';
 const cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
 const session = require('express-session');
 const authenticate = require('./lib/authenticate');
 
@@ -40,7 +41,7 @@ app.route('/login')
     })
     .post(function (req, res) {
         request(`${baseUrl}/api/user/find/${req.body.username}`, function(error, response, user) {
-            if(user !== '' && req.body.password === JSON.parse(user).password) {
+            if(user !== '' && bcrypt.compareSync(req.body.password, JSON.parse(user).password)) {
                 req.session.user = user;
                 res.redirect('/');
             } else {
