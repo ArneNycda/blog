@@ -1,4 +1,4 @@
-$('#comment-form #submit').click(function() {
+function addComment() {
     event.preventDefault();
     const postid = window.location.href.slice(window.location.href.indexOf('=') + 1);
     $.ajax({
@@ -12,4 +12,4 @@ $('#comment-form #submit').click(function() {
             $('#comments').append(`<div class="comment"><p>${newComment.text}</p></div>`);
         }
     });
-});
+}
