@@ -40,7 +40,7 @@ app.route('/login')
     })
     .post(function (req, res) {
         request(`${baseUrl}/api/user/find/${req.body.username}`, function(error, response, user) {
-            if(user !== null && req.body.password === JSON.parse(user).password) {
+            if(user !== '' && req.body.password === JSON.parse(user).password) {
                 req.session.user = user;
                 res.redirect('/');
             } else {
