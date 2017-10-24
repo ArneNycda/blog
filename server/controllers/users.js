@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const User = require('../models').User;
 const Post = require('../models').Post;
 
@@ -6,7 +7,7 @@ module.exports = {
     return User
       .create({
         username: req.body.username,
-        password: req.body.password,
+        password: bcrypt.hashSync(req.body.password, 9),
         displayname: req.body.displayname
       })
       .then(user => res.status(201).send(user))
