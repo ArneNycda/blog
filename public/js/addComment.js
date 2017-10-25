@@ -2,7 +2,7 @@ function addComment() {
     event.preventDefault();
     const postid = window.location.href.slice(window.location.href.indexOf('=') + 1);
     $.ajax({
-        type: "POST",
+        type: 'POST',
         url: `/api/post/${postid}/comment`,
         data: {
             text: $("#comment").val()
