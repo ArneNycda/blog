@@ -13,6 +13,9 @@ $('#new-user #submit').click(function() {
         data: formData,
         success: function(newPost) {
             window.location.replace('/login');
+        },
+        error: function(data) {
+            $('#new-user .registerCheck').show().html('The entered data is not correct.');
         }
     });
 });
