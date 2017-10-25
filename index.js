@@ -43,9 +43,9 @@ app.route('/login')
         request(`${baseUrl}/api/user/find/${req.body.username}`, function(error, response, user) {
             if(user !== '' && bcrypt.compareSync(req.body.password, JSON.parse(user).password)) {
                 req.session.user = user;
-                res.redirect('/');
+                res.sendStatus(200);
             } else {
-                res.redirect('/login');
+                res.sendStatus(401);
             }
         });
     });

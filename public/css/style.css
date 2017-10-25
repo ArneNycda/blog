@@ -76,7 +76,7 @@ textarea {
     margin-right: 30px;
 }
 
-#new-user p {
+.err {
     display: none;
     background-color: #ff5050;
     width: 400px;

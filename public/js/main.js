@@ -1,3 +1,3 @@
-require(['home', 'addUser', 'addPost', 'setCookie', 'validateLogin'], function(home, addUser, addPost, setCookie, validateLogin) {
+require(['togglePosts', 'addUser', 'addPost', 'setCookie', 'login'], function(togglePosts, addUser, addPost, setCookie, login) {
 
 });
