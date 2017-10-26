@@ -1,0 +1,64 @@
+$formwidth: 400px;
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0 auto;
+    width: 70%;
+    text-align: justify;
+}
+
+main {
+    margin-bottom: 50px;
+}
+
+@import 'login';
+@import 'register';
+@import 'post';
+@import 'postList';
+
+header li {
+    display: inline-block;
+    margin: 20px 20px 20px 0px;
+}
+
+.err {
+    display: none;
+    background-color: #ff5050;
+    width: $formwidth - 10;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 2px 0px;
+    border: 1px solid black;
+}
+
+/* forms */
+label, input, textarea {
+    display: inline-block;
+}
+
+input, textarea {
+    margin: 10px 0px;
+}
+
+.text-field, textarea {
+    width: $formwidth;
+}
+
+textarea {
+    height: 200px;
+}
+
+/* comment form */
+#comment-form {
+    margin: 20px auto;
+    width: 95%;
+
+    textarea {
+        width: 100%;
+    }
+}
+

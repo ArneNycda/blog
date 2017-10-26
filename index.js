@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const app = express();
+const sassMiddleware = require('node-sass-middleware');
 const ejs = require('ejs');
 const { Pool } = require('pg');
 const pool = new Pool({
@@ -19,6 +20,16 @@ const bcrypt = require('bcrypt');
 const session = require('express-session');
 const authenticate = require('./lib/authenticate');
 
+app.use(
+    sassMiddleware({
+        src: __dirname + '/public/styles/sass',
+        dest: __dirname + '/public/styles',
+        debug: true,
+        outputStyle: 'expanded',
+        prefix: '/styles'
+    }),
+    express.static(__dirname + '/public')
+);
 app.set('view engine', 'ejs');
 app.engine('ejs', require('express-ejs-extend'));
 app.use(express.static(__dirname + '/public'));
