@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const logger = require('morgan');
 const app = express();
 const sassMiddleware = require('node-sass-middleware');
-const ejs = require('ejs');
+const pug = require('pug');
 const { Pool } = require('pg');
 const pool = new Pool({
       host: 'localhost',
@@ -30,8 +30,7 @@ app.use(
     }),
     express.static(__dirname + '/public')
 );
-app.set('view engine', 'ejs');
-app.engine('ejs', require('express-ejs-extend'));
+app.set('view engine', 'pug');
 app.use(express.static(__dirname + '/public'));
 app.use(express.json());
 app.use(express.urlencoded());

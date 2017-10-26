@@ -1,0 +1,34 @@
+extends ../layout
+
+block content
+    #register
+        h2 Registreer
+        form#new-user(action='/register', method='post')
+            div
+                label Username:
+                br
+                input#username.text-field(type='text', name='username')
+                br
+                p.err.lengthCheck
+            div
+                label Password:
+                br
+                input#first-password.text-field(type='password', name='first-password')
+                br
+                p.err.lengthCheck
+            div
+                label Check password:
+                br
+                input#second-password.text-field(type='password', name='second-password')
+                br
+                p.err.lengthCheck
+                p.err.passwordCheck
+            div
+                label Displayname:
+                br
+                input#displayname.text-field(type='text', name='displayname')
+                br
+                p.err.lengthCheck
+            p.err.registerCheck
+            input#submit(type='submit', value='Registeer', disabled='true')
+            a(href='/login') Of login

@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+    include ../partials/header
+    #post
+        .post
+            h2.title #{post.title}
+            .body #{post.body}
+        #comments
+            each comment in comments= comments
+                .comment
+                    p #{comment.text}
+        form#comment-form
+            textarea#comment.text-field(type='text', name='text')
+            br
+            input#submit(type='submit', value='Place comment', onclick='addComment()')
+        script(src='../js/addComment.js')

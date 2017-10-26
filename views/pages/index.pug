@@ -1,0 +1,12 @@
+extends ../layout
+
+block content
+    include ../partials/header
+    #post-list
+        h1 Posts
+        #post-filter
+            | Show only my own posts: 
+            input(type='checkbox', name='post-filter')
+        each post in posts= posts
+            .post(user-id= post.userid)
+                a(href=`post?post=${post.id}`) #{post.title}

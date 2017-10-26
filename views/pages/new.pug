@@ -1,0 +1,16 @@
+extends ../layout
+
+block content
+    include ../partials/header
+    #new
+        form#new-post(action='/new', method='post')
+            label Title:
+            br
+            input#title.text-field(type='text', name='title')
+            br
+            label Body:
+            br
+            textarea#body.text-field(type='text', name='body')
+            br
+            div(style='clear: both', ;='')
+            input#submit(type='submit')
