@@ -3,8 +3,10 @@ html
     head
         title Blog
         link(rel='stylesheet', type='text/css', href='./../styles/style.css')
+        script(type="application/javascript", src="./js/lib/js.cookie.js")
+        script(type="application/javascript", src="./js/lib/setCookie.js")
+        script(data-main="./js/lib/main", src="./js/lib/require.js")
+        script.
+            require(['main']);
     body
         block content
-        script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
-        script(src='js/js.cookie.js')
-        script(data-main='js/main', src='./js/require.js')

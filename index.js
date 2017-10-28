@@ -31,7 +31,7 @@ app.use(
     express.static(__dirname + '/public')
 );
 app.set('view engine', 'pug');
-app.use(express.static(__dirname + '/public'));
+app.use('/public', express.static(__dirname + '/public'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(logger('dev'));
