@@ -1,6 +1,6 @@
-define(['jquery'], function($){
-    $('#post-filter input').click(function() {
-        $.get('/retrieveUserid', function(data) {
+define(['jquery'], $ => {
+    $('#post-filter input').click(() => {
+        $.get('/retrieveUserid', data => {
             $(`.post:not([user-id="${data.userid}"])`).toggle();
         });
     });

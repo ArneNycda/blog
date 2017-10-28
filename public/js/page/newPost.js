@@ -1,8 +1,8 @@
-define(['jquery'], function($){    
-    $('#new-post #submit').click(function() {
+define(['jquery'], $ => {    
+    $('#new-post #submit').click(() => {
         event.preventDefault();
 
-        $.get('/retrieveUserid', function(data) {
+        $.get('/retrieveUserid', data => {
             $.ajax({
                 type: 'POST',
                 url: `/api/user/${data.userid}/post`,
@@ -10,7 +10,7 @@ define(['jquery'], function($){
                     title: $('#title').val(),
                     body: $('#body').val()
                 },
-                success: function(newPost) {
+                success(newPost) {
                     window.location.href = `/post/?post=${newPost.id}`;
                 }
             });

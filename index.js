@@ -3,16 +3,6 @@ const bodyParser = require('body-parser');
 const logger = require('morgan');
 const app = express();
 const sassMiddleware = require('node-sass-middleware');
-const pug = require('pug');
-const { Pool } = require('pg');
-const pool = new Pool({
-      host: 'localhost',
-      port: 3001,
-      database: 'blog',
-      user: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD
-});
-const SQL = require('sql-template-strings');
 const request = require('request');
 const baseUrl = 'http://localhost:3000';
 const cookieParser = require('cookie-parser');
@@ -22,21 +12,21 @@ const authenticate = require('./lib/authenticate');
 
 app.use(
     sassMiddleware({
-        src: __dirname + '/public/styles/sass',
-        dest: __dirname + '/public/styles',
+        src: `${__dirname}/public/styles/sass`,
+        dest: `${__dirname}/public/styles`,
         debug: true,
         outputStyle: 'expanded',
         prefix: '/styles'
     }),
-    express.static(__dirname + '/public')
+    express.static(`${__dirname}/public`)
 );
 app.set('view engine', 'pug');
-app.use('/public', express.static(__dirname + '/public'));
+app.use('/public', express.static(`${__dirname}/public`));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(session({
     secret: 'secure blog',
@@ -46,12 +36,12 @@ app.use(session({
 require('./server/routes')(app);
 
 app.route('/login')
-    .get(function (req, res) {
+    .get((req, res) => {
         res.render('./pages/login');
     })
-    .post(function (req, res) {
-        request(`${baseUrl}/api/user/find/${req.body.username}`, function(error, response, user) {
-            if(user !== '' && bcrypt.compareSync(req.body.password, JSON.parse(user).password)) {
+    .post((req, res) => {
+        request(`${baseUrl}/api/user/find/${req.body.username}`, (error, response, user) => {
+            if (user !== '' && bcrypt.compareSync(req.body.password, JSON.parse(user).password)) {
                 req.session.user = user;
                 res.sendStatus(200);
             } else {
@@ -60,30 +50,31 @@ app.route('/login')
         });
     });
 
-app.get('/retrieveUserid', function(req, res) {
+app.get('/retrieveUserid', (req, res) => {
     const userid = JSON.parse(req.session.user).id;
-    res.send({userid: userid});
+
+    res.send({ userid });
 });
 
-app.get('/register', function (req, res) {
+app.get('/register', (req, res) => {
     res.render('./pages/register');
 });
 
-app.get('/', authenticate, function (req, res) {
-    request(`${baseUrl}/api/post/all`, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            res.render('./pages/index', {posts: JSON.parse(body)});
+app.get('/', authenticate, (req, res) => {
+    request(`${baseUrl}/api/post/all`, (error, response, body) => {
+        if (!error && response.statusCode === 200) {
+            res.render('./pages/index', { posts: JSON.parse(body) });
         }
     });
 });
 
-app.get('/new', authenticate, function (req, res) {
+app.get('/new', authenticate, (req, res) => {
     res.render('./pages/new');
 });
 
-app.get('/logout', function (req, res) {
-    req.session.destroy(function(err) {
-        if(err) {
+app.get('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
             throw err;
         } else {
             res.redirect('/login');
@@ -91,23 +82,23 @@ app.get('/logout', function (req, res) {
     });
 });
 
-app.get('/post', authenticate, function (req, res) {
+app.get('/post', authenticate, (req, res) => {
     const postid = req.query.post;
 
     if (postid === undefined ) {
         res.redirect('/');
     } else {
-        request(`${baseUrl}/api/post/${postid}`, function (error, response, post) {
-            request(`${baseUrl}/api/comment/forpost/${postid}`, function (error, response, comments) {
-                if (!error && response.statusCode == 200) {
-                    res.render('./pages/posts', {post: JSON.parse(post), comments: JSON.parse(comments)});
+        request(`${baseUrl}/api/post/${postid}`, (error, response, post) => {
+            request(`${baseUrl}/api/comment/forpost/${postid}`, (error, response, comments) => {
+                if (!error && response.statusCode === 200) {
+                    res.render('./pages/posts', { post: JSON.parse(post), comments: JSON.parse(comments) });
                 }
             });
         });
     }
 });
 
-app.get('*', authenticate, function (req, res) {
+app.get('*', authenticate, (req, res) => {
     res.redirect('/');
 });
 
