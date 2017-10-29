@@ -11,7 +11,7 @@ define(['jquery'], $ => {
                     body: $('#body').val()
                 },
                 success(newPost) {
-                    window.location.href = `/post/?post=${newPost.id}`;
+                    window.location.href = `/post?id=${newPost.id}`;
                 }
             });
         });

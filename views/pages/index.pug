@@ -9,4 +9,4 @@ block content
             input(type='checkbox', name='post-filter')
         each post in posts= posts
             .post(user-id= post.userid)
-                a(href=`post?post=${post.id}`) #{post.title}
+                a(href=`post?id=${post.id}`) #{post.title}

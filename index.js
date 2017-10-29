@@ -83,7 +83,7 @@ app.get('/logout', (req, res) => {
 });
 
 app.get('/post', authenticate, (req, res) => {
-    const postid = req.query.post;
+    const postid = req.query.id;
 
     if (postid === undefined ) {
         res.redirect('/');

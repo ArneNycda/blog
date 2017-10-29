@@ -3,8 +3,8 @@ html
     head
         title Blog
         link(rel='stylesheet', type='text/css', href='./../styles/style.css')
+    body
+        block content
         script(data-main="./js/lib/main", src="./js/lib/require.js")
         script.
             require(['main']);
-    body
-        block content
